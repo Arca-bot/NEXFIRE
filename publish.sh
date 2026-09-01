@@ -8,7 +8,9 @@
 export PATH="$HOME/.local/bin:/usr/bin:/bin:/usr/local/bin:$PATH"
 
 DIR="/Users/miyazawareiou/Desktop/Claude-NEXFIRE web"
-LOG="$DIR/.publish.log"
+# ログは監視対象フォルダの外（自分の書き込みで再発火するのを防ぐため）
+LOG="$HOME/Library/Logs/nexfire-autopublish/publish.log"
+mkdir -p "$(dirname "$LOG")"
 
 cd "$DIR" || exit 1
 
