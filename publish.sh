@@ -7,7 +7,7 @@
 # ============================================================
 export PATH="$HOME/.local/bin:/usr/bin:/bin:/usr/local/bin:$PATH"
 
-DIR="/Users/miyazawareiou/Desktop/Claude-NEXFIRE web"
+DIR="/Users/miyazawareiou/nexfire-site"
 # ログは監視対象フォルダの外（自分の書き込みで再発火するのを防ぐため）
 LOG="$HOME/Library/Logs/nexfire-autopublish/publish.log"
 mkdir -p "$(dirname "$LOG")"
