@@ -134,6 +134,48 @@
   .card .ck.a{top:11px;left:11px;border-top:1px solid #AEB4BC;border-left:1px solid #AEB4BC;}
   .card .ck.b{bottom:11px;right:11px;border-bottom:1px solid #AEB4BC;border-right:1px solid #AEB4BC;}
 
+  /* ================= SHOP CTA（CONCEPT↔PRODUCTS の間） ================= */
+  .shopcta{
+    position:relative;width:100%;
+    aspect-ratio:16/9;                 /* 16:9 の横動画に合わせた枠 */
+    max-height:88svh;
+    min-height:min(88svh,460px);
+    overflow:hidden;background:#000;
+    display:flex;align-items:center;justify-content:center;
+    border-top:1px solid #15171A;border-bottom:1px solid #15171A;
+  }
+  .shopcta-bg{
+    position:absolute;inset:0;z-index:0;
+    width:100%;height:100%;
+    object-fit:cover;object-position:center;   /* 枠に合わせてトリミングして敷き詰める */
+    pointer-events:none;
+    filter:grayscale(1) contrast(1.06) brightness(.7);  /* モノトーンに寄せる。不要ならこの1行を削除 */
+  }
+  .shopcta-scrim{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.15) 32%,rgba(0,0,0,.6)),
+      linear-gradient(90deg,rgba(0,0,0,.7),transparent 24%,transparent 76%,rgba(0,0,0,.7));
+  }
+  .shopcta-inner{
+    position:relative;z-index:2;
+    display:flex;flex-direction:column;align-items:center;
+    gap:clamp(16px,2.4vw,26px);padding:24px;text-align:center;
+  }
+  .shopcta-eyebrow{font-size:9px;letter-spacing:.34em;color:#AEB4BC;}
+  .shopcta-btn{
+    display:inline-flex;flex-direction:column;align-items:center;gap:10px;
+    padding:clamp(15px,2.1vw,21px) clamp(28px,5vw,56px);
+    border:1px solid #fff;background:rgba(0,0,0,.25);color:#fff;
+    transition:background .25s ease,color .25s ease;
+  }
+  .shopcta-btn .poly{color:currentColor;}
+  .shopcta-btn-sub{font-size:8.5px;letter-spacing:.3em;color:currentColor;opacity:.72;}
+  .shopcta-btn:hover,.shopcta-btn:focus-visible{background:#fff;color:#000;}
+  @media (max-width:760px){
+    .shopcta{aspect-ratio:auto;height:82svh;min-height:0;}
+  }
+
   footer{background:#000;border-top:1px solid #15171A;padding:clamp(34px,5vw,64px) clamp(14px,3vw,38px) 30px;margin-top:clamp(50px,8vw,110px);}
   .fg{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap;align-items:flex-end;}
   .fg .wm{width:140px;color:#fff;}
