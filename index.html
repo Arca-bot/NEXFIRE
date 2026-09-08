@@ -275,6 +275,28 @@
     </div>
   </div>
 
+  <!-- ======== SHOP — CONCEPT と PRODUCTS の間。動画背景の購入導線 ========
+       差し替えるのは次の2か所だけ：
+         1) 背景動画 …… 下の <source src="..."> を実ファイル名に変更（16:9 の横動画を想定）
+         2) 購入ページ …… 下の <a class="shopcta-btn" href="..."> を購入ページの URL に変更
+       詳しい手順はチャットの説明を参照。 -->
+  <section class="shopcta" id="shopcta" aria-label="SHOP">
+    <video class="shopcta-bg" id="shopVid" autoplay muted loop playsinline preload="auto">
+      <!-- ▼ ここに動画ファイルを指定（/Users/miyazawareiou/nexfire-site/ 直下に置いたファイル名） ▼ -->
+      <source src="shop.mp4" type="video/mp4">
+      <!-- webm も用意するなら <source src="shop.webm" type="video/webm"> を追加 -->
+    </video>
+    <div class="shopcta-scrim" aria-hidden="true"></div>
+    <div class="shopcta-inner">
+      <span class="shopcta-eyebrow mono">Ignite the Next</span>
+      <!-- ▼ 購入ページの URL を href に入れる。外部サイトなら target/rel はこのまま、同一サイト内なら target と rel を削除 ▼ -->
+      <a class="shopcta-btn" id="shopBtn" href="#" target="_blank" rel="noopener">
+        <span class="poly" data-poly="PURCHASE" data-track="2.4" data-sw="1.6" data-cap="24" aria-label="PURCHASE">PURCHASE</span>
+        <span class="shopcta-btn-sub mono">Enter the store</span>
+      </a>
+    </div>
+  </section>
+
   <!-- ======== PRODUCTS — CONCEPTから途切れずに続く。別ビューではない ======== -->
   <div class="phead">
     <span class="n">02</span>
