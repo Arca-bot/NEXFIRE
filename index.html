@@ -123,6 +123,8 @@
   @media (max-width:520px){.pgrid{grid-template-columns:1fr;}}
   .card{position:relative;aspect-ratio:4/5;background:#08090B;overflow:hidden;}
   .card canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+  /* 商品写真。canvasと同じz-indexでDOM順があとなので、画像があれば結晶の上に乗る */
+  .card .pic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
   .card::after{
     content:"";position:absolute;left:0;right:0;bottom:0;height:46%;z-index:1;pointer-events:none;
     background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.8) 60%,rgba(0,0,0,.96));
@@ -753,6 +755,30 @@ var ITEMS=[
   {n:"VERTEX CAP",s:"APPAREL / 007",c:"#0B0D10"},
   {n:"MITER WATCH",s:"OBJECTS / 008",c:"#121519"}
 ];
+/* 商品写真の自動読み込み。
+   フォルダに item1.png を置けば1番目のカードの絵になる（item1〜item8）。
+   .png / .jpg / .jpeg / .webp を順に探し、どれも無ければ何もしない
+   ＝元のポリゴン結晶がそのまま見える。
+   つまり「画像を入れる／消す」だけで切り替わり、コードを触る必要がない。 */
+var PIC_EXT=[".png",".jpg",".jpeg",".webp"];
+function loadCardPics(grid){
+  var pics=grid.querySelectorAll("img.pic");
+  for(var i=0;i<pics.length;i++){
+    (function(img){
+      var base=img.getAttribute("data-base"), n=0;
+      /* 読めるまでは隠しておく（壊れた画像アイコンやaltを出さないため） */
+      img.style.visibility="hidden";
+      img.addEventListener("load",function(){ img.style.visibility="visible"; });
+      img.addEventListener("error",function(){
+        n++;
+        if(n<PIC_EXT.length){ img.src=base+PIC_EXT[n]; }
+        else if(img.parentNode){ img.parentNode.removeChild(img); }
+      });
+      img.src=base+PIC_EXT[0];
+    })(pics[i]);
+  }
+}
+
 function buildProducts(){
   var grid=document.getElementById("pgrid");
   if(grid.childElementCount)return;
@@ -761,6 +787,7 @@ function buildProducts(){
     var it=ITEMS[i];
     html+='<article class="card">'+
       '<canvas data-card="'+i+'"></canvas>'+
+      '<img class="pic" alt="'+it.n+'" data-base="item'+(i+1)+'">'+
       '<span class="ck a"></span><span class="ck b"></span>'+
       '<span class="ix">'+(i<9?"0":"")+(i+1)+'</span>'+
       '<span class="nm poly" data-poly="'+it.n+'" data-cap="13" data-track="2.0" data-sw="1.7">'+it.n+'</span>'+
@@ -772,6 +799,7 @@ function buildProducts(){
   /* 各カードに静止したメタルの結晶を描く */
   var cvs=grid.querySelectorAll("canvas");
   for(var j=0;j<cvs.length;j++)drawCard(cvs[j],j);
+  loadCardPics(grid);
 }
 function drawCard(cv,idx){
   var r=new Renderer(cv);
