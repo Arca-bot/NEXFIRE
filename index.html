@@ -886,6 +886,20 @@ setTimeout(onScroll,240);
 /* pgridはまだ画面外にあるため、レイアウト確定を1フレーム待ってから採寸する */
 requestAnimationFrame(function(){ requestAnimationFrame(buildProducts); });
 
+/* SHOP背景動画：muted+playsinlineでほぼ自動再生されるが、
+   iOSの低電力モード等で止まる場合に備えて再生を促す（無音なので体験は変わらない） */
+(function(){
+  var v=document.getElementById("shopVid");
+  if(!v)return;
+  function go(){ var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+  v.addEventListener("canplay",go);
+  go();
+  /* 最初のタップ/クリックで一度だけ再挑戦 */
+  var kick=function(){ go(); window.removeEventListener("touchstart",kick); window.removeEventListener("click",kick); };
+  window.addEventListener("touchstart",kick,{passive:true});
+  window.addEventListener("click",kick);
+})();
+
 })();
 </script>
 </body>
