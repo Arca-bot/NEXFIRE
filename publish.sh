@@ -45,11 +45,12 @@ echo "  GitHubへpushしました" >> "$LOG"
 #   「pushできた＝公開された」と思い込まないための検証）
 # ------------------------------------------------------------
 LIVE="https://nexfire.netlify.app/"
-WANT=$(md5 -q index.html)
+# Netlifyは公開時にHUDスクリプトを1行自動注入するため、その行を除いて比較する
+WANT=$(sed '/\/\.netlify\/scripts\//d' index.html | md5 -q)
 
 for i in 1 2 3 4 5 6 7 8; do
   sleep 20
-  GOT=$(curl -sf -H 'Cache-Control: no-cache' "$LIVE?cb=$RANDOM" | md5 -q)
+  GOT=$(curl -sf -H 'Cache-Control: no-cache' "$LIVE?cb=$RANDOM" | sed '/\/\.netlify\/scripts\//d' | md5 -q)
   if [ "$GOT" = "$WANT" ]; then
     echo "  ✅ 公開サイトへ反映を確認しました（${i}回目）" >> "$LOG"
     exit 0
