@@ -32,8 +32,30 @@ fi
 
 git commit -m "auto: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG" 2>&1
 
-if git push origin main >> "$LOG" 2>&1; then
-  echo "  公開に反映しました" >> "$LOG"
-else
+if ! git push origin main >> "$LOG" 2>&1; then
   echo "  ⚠️ pushに失敗しました。GitHub連携を確認してください" >> "$LOG"
+  osascript -e 'display notification "GitHubへのpushに失敗しました" with title "NEXFIRE 公開エラー"' 2>/dev/null
+  exit 1
 fi
+echo "  GitHubへpushしました" >> "$LOG"
+
+# ------------------------------------------------------------
+# ここまでは push が通っただけ。実際に公開サイトへ反映されたかを確認する。
+# （Netlifyのデプロイが止まっていても push は成功するため、
+#   「pushできた＝公開された」と思い込まないための検証）
+# ------------------------------------------------------------
+LIVE="https://nexfire.netlify.app/"
+WANT=$(md5 -q index.html)
+
+for i in 1 2 3 4 5 6 7 8; do
+  sleep 20
+  GOT=$(curl -sf -H 'Cache-Control: no-cache' "$LIVE?cb=$RANDOM" | md5 -q)
+  if [ "$GOT" = "$WANT" ]; then
+    echo "  ✅ 公開サイトへ反映を確認しました（${i}回目）" >> "$LOG"
+    exit 0
+  fi
+done
+
+echo "  ⚠️ pushは成功したが、公開サイトに反映されていません（約3分待機）" >> "$LOG"
+echo "     → Netlifyのデプロイが止まっている可能性。Deploysタブを確認すること" >> "$LOG"
+osascript -e 'display notification "pushはできましたが公開サイトに反映されていません。Netlifyのデプロイを確認してください" with title "NEXFIRE 未反映"' 2>/dev/null
