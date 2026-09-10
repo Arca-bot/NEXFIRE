@@ -44,6 +44,21 @@
   nav .rt a{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.26em;color:#7C838C;padding:4px 0;position:relative;}
   nav .rt a.on{color:#fff;}
   nav .rt a.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:#fff;}
+  /* SHOPだけは外部の購入ページ。白塗りにして他のナビ項目と明確に差別化する。
+     hover時の枠線は box-shadow で描く（borderだと1pxぶん幅が動くため） */
+  nav .rt a.shop{
+    color:#000;background:#fff;padding:7px 14px;font-weight:700;
+    transition:background .2s ease,color .2s ease,box-shadow .2s ease;
+  }
+  nav .rt a.shop:hover,nav .rt a.shop:focus-visible{
+    background:transparent;color:#fff;box-shadow:inset 0 0 0 1px #fff;
+  }
+  /* 項目が4つになるため、狭い画面では詰める */
+  @media (max-width:600px){
+    nav .rt{gap:10px;}
+    nav .rt a{font-size:8.5px;letter-spacing:.14em;}
+    nav .rt a.shop{padding:6px 10px;}
+  }
 
   /* ================= VIEW ================= */
   .view{display:none;}
@@ -203,6 +218,9 @@
     <a href="#/" data-nav data-route="/">HOME</a>
     <a href="#/concept" data-nav data-route="/concept">CONCEPT</a>
     <a href="#/products" data-nav data-route="/products">PRODUCTS</a>
+    <!-- 外部の購入ページ。ページ内移動ではないので data-nav / data-route は付けない
+         （付けると syncNav の点灯判定に混ざる） -->
+    <a class="shop" href="https://nexfire.base.ec/" target="_blank" rel="noopener">SHOP</a>
   </div>
 </nav>
 
