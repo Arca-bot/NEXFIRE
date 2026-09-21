@@ -151,6 +151,12 @@
   .card .ck.a{top:11px;left:11px;border-top:1px solid #AEB4BC;border-left:1px solid #AEB4BC;}
   .card .ck.b{bottom:11px;right:11px;border-bottom:1px solid #AEB4BC;border-right:1px solid #AEB4BC;}
 
+  /* PRODUCTS 準備中 */
+  .psoon{min-height:clamp(260px,42svh,460px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    border-top:1px solid #101215;border-bottom:1px solid #101215;background:#08090B;text-align:center;padding:40px 16px;}
+  .psoon-t{font-family:var(--f-mono);font-size:clamp(12px,1.6vw,16px);letter-spacing:.42em;color:#AEB4BC;}
+  .psoon-s{font-family:var(--f-mono);font-size:10px;letter-spacing:.22em;color:#4A5057;}
+
   /* ================= SHOP CTA（CONCEPT↔PRODUCTS の間） ================= */
   .shopcta{
     position:relative;width:100%;
@@ -321,7 +327,10 @@
     <span class="n">02</span>
     <span class="t poly" data-poly="PRODUCTS" data-fit="width" data-track="2.6" data-sw="1.6" aria-label="PRODUCTS">PRODUCTS</span>
   </div>
-  <div class="pgrid" id="pgrid"></div>
+  <div class="psoon" id="pgrid">
+    <span class="psoon-t">COMING SOON</span>
+    <span class="psoon-s">Products are in development.</span>
+  </div>
   <footer>
     <div class="fg">
       <div style="display:flex;flex-direction:column;gap:11px">
@@ -930,7 +939,7 @@ onScroll();
 setTimeout(onScroll,60);
 setTimeout(onScroll,240);
 /* pgridはまだ画面外にあるため、レイアウト確定を1フレーム待ってから採寸する */
-requestAnimationFrame(function(){ requestAnimationFrame(buildProducts); });
+/* PRODUCTS は準備中のため商品カードは生成しない */
 
 /* SHOP背景動画：muted+playsinlineでほぼ自動再生されるが、
    iOSの低電力モード等で止まる場合に備えて再生を促す（無音なので体験は変わらない） */
